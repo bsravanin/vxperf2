@@ -1,0 +1,5 @@
+REQUIRED: Perl, Gnuplot
+INSTALLATION: perl install.pl
+DOCUMENTATION: perldoc vxperf2, perldoc log2db
+BUILD: perl build.pl
+REFERENCES: http://bsravanin.blogspot.com/search/label/vxperf2
