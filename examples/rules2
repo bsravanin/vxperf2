@@ -1,0 +1,3 @@
+# Modified prstat log collected on Solaris.
+y-axis: SIZE RSS CPU
+z-axis: PID

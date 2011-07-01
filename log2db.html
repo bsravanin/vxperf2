@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>log2db.pm</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:rurban@x-ray.at" />
+</head>
+
+<body style="background-color: white">
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#subroutines">SUBROUTINES</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#credits">CREDITS</a></li>
+	<li><a href="#license_and_copyright">LICENSE AND COPYRIGHT</a></li>
+	<li><a href="#last_updated">LAST UPDATED</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p><strong>log2db</strong></p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+  use log2db;</pre>
+<pre>
+  &amp;modifyIostat($logPath, $tablePath);          # iostat
+  &amp;modifyNetstat($logPath, $tablePath);         # netstat
+  &amp;modifySlabinfo($logPath, $tablePath);        # slabinfo
+  &amp;modifySolstat($logPath, $tablePath);         # mpstat, prstat
+  &amp;modifySysstat($logPath, $tablePath);         # pidstat, sar
+  &amp;modifyTypeperf($logPath, $tablePath);        # esxtop, typeperf
+  &amp;modifyVmstat($logPath, $tablePath);          # vmstat
+  &amp;modifyVxfsstatBCache($logPath, $tablePath);  # vxfsstat_bcache
+  &amp;modifyVxfsstatICache($logPath, $tablePath);  # vxfsstat_icache
+  &amp;modifyVxfsstatFile($logPath, $tablePath);    # vxfsstat_file
+  &amp;modifyVxstat($logPath, $tablePath);          # vxstat</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p><strong>log2db</strong> is a utility to modify log files generated using esxtop, iostat, mpstat, netstat, pidstat, prstat, sar, slabinfo, typeperf, vmstat, vxfsstat, vxstat into text database that can be parsed by <strong>vxperf2</strong>. <strong>log2db.pl</strong> is the Perl wrapper around <strong>log2db</strong> which can be run from the command-line or called from non-Perl scripts.</p>
+<p>
+</p>
+<hr />
+<h1><a name="subroutines">SUBROUTINES</a></h1>
+<p>The <strong>log2db</strong> module contains eleven subroutines: <strong>modifyIostat</strong>, <strong>modifyNetstat</strong>, <strong>modifySlabinfo</strong>, <strong>modifySolstat</strong>, <strong>modifySysstat</strong>, <strong>modifyTypeperf</strong>, <strong>modifyVmstat</strong>, <strong>modifyVxfsstatBCache</strong>, <strong>modifyVxfsstatICache</strong>, <strong>modifyVxfsstatFile</strong> and <strong>modifyVxstat</strong>.</p>
+<p>All of them take two parameters -- path to the log file to be modified and path to the table file to be saved as. They're all very trivial, basic, and &quot;hardcoded&quot;. One golden rule for creating subroutines is that <strong>the table file should always start with a newline</strong>.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p><strong>Sravan Bhamidipati</strong> <a href="mailto:(Sravan_Bhamidipati@symantec.com,">(Sravan_Bhamidipati@symantec.com,</a> <a href="mailto:bsravanin@gmail.com)">bsravanin@gmail.com)</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="credits">CREDITS</a></h1>
+<p>Rajalaxmi Angadi contributed to the <strong>modifyVxfsstatBCache</strong>, <strong>modifyVxfsstatICache</strong>, <strong>modifyVxfsstatFile</strong> and <strong>modifyVxstat</strong> subroutines.</p>
+<p>
+</p>
+<hr />
+<h1><a name="license_and_copyright">LICENSE AND COPYRIGHT</a></h1>
+<p>GNU GPL: <a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="last_updated">LAST UPDATED</a></h1>
+<p>1st June, 2011</p>
+
+</body>
+
+</html>

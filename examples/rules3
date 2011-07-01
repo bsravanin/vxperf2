@@ -1,0 +1,7 @@
+# Modified mpstat log collected on Solaris.
+y-axis: minf mjf xcal  intr ithr  csw icsw migr smtx  srw syscl  usr sys  wt idl
+# z-axis:
+plot: csw idl intr minf
+plot: ithr migr
+plot: sys usr
+plot: xcal syscl

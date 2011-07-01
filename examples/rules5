@@ -1,0 +1,8 @@
+# Modified vmstat log collected on HPUX.
+y-axis: r     b     w      avm    free   re   at    pi   po    fr   de    sr     in   syscalls    cs  us sy id
+plot: avm free
+plot: in cs
+plot: syscalls
+plot: us sy
+offset: 10
+points: 100

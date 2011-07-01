@@ -1,0 +1,7 @@
+# Modified iostat log collected on RHEL.
+y-axis: %user   %nice %system %iowait  %steal   %idle rrqm/s   wrqm/s   r/s   w/s   rsec/s   wsec/s avgrq-sz avgqu-sz   await  svctm  %util
+z-axis: Device:
+plot: rsec/s  avgrq-sz
+plot: wsec/s
+plot: %util
+only: sdd sde3 sdah sdaf

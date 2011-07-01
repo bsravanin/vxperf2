@@ -1,0 +1,2 @@
+# Modified sar log collected on RHEL.
+y-axis: %usr %sys %iowait %soft proc/s      ldavg-1   ldavg-5  ldavg-15 tps  rd_sec/s  wr_sec/s  avgrq-sz  avgqu-sz     await     svctm     %util
