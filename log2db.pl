@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #  Author: Sravan Bhamidipati
-#  Date: 1st June, 2011
+#  Date: 26th July, 2011
 #  Purpose: Modify a known log type into a text database.
 #  DONE: esxtop iostat mpstat netstat pidstat prstat sar slabinfo typeperf vmstat vxfsstatBCache vxfsstatICache vxfsstatFile vxstat
 #  TODO: sarasc top
@@ -11,7 +11,7 @@ use log2db;
 use File::Basename;
 use Switch;
 
-if (scalar(@ARGV) != 3) {die "Usage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|typeperf|vmstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxstat> <logPath> <tablePath>\n"}
+if (scalar(@ARGV) != 3) {die "Usage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|typeperf|vmstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxstat> <logPath> <dbPath>\n"}
 
 my ($logType, $logPath, $tablePath) = ($ARGV[0], $ARGV[1], $ARGV[2]);
 my $saveDir = dirname($tablePath);
@@ -87,5 +87,5 @@ switch ($logType) {
 		&modifyVxstat($logPath, $tablePath);
 	}
 
-	else {die "Please verify the spelling of $logType.\nUsage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|typeperf|vmstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxstat> <logPath> <tablePath>\n"}
+	else {die "Please verify the spelling of $logType.\nUsage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|typeperf|vmstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxstat> <logPath> <dbPath>\n"}
 }

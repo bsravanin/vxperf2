@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #  Author: Sravan Bhamidipati
-#  Date: 1st June, 2011
+#  Date: 26th July, 2011
 #  Purpose: Perl module with subroutines to parse text databases, summarize and visualize them based on a rules file.
 
 
@@ -178,7 +178,7 @@ sub applyRules {
 
 		my $column;
 		open SUMMARY, ">> $resultsDir/summary.txt" or die "Cannot open $resultsDir/summary.txt for write: $!\n";
-		if ($#databases > 0) {print SUMMARY "Summary $summary:\n"}
+		if ($#databases > 0) {print SUMMARY "Summary $summary:\nField\tMin\tMax\tSum\tRows\tAvg\n"}
 		else {print SUMMARY "Summary:\nField\tMin\tMax\tSum\tRows\tAvg\n"}
 		foreach $row (sort keys %functions) {
 			print SUMMARY "$row\t";

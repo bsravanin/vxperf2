@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #  Author: Sravan Bhamidipati
-#  Date: 1st June, 2011
+#  Date: 26th July, 2011
 #  Purpose: Modify logs into text databases that vxperf2 can parse.
 #  DONE: esxtop iostat mpstat netstat pidstat prstat sar slabinfo typeperf vmstat vxfsstatBCache vxfsstatICache vxstat
 #  TODO: sarasc top
@@ -16,7 +16,7 @@ use File::Path;
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifyIostat {
-	my ($logPath, $tablePath, $time, $firstWord, $os, @temp) = ($_[0], $_[1], "", 0, "");
+	my ($logPath, $tablePath, $time, $firstWord, $os) = ($_[0], $_[1], "", 0, "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -31,8 +31,7 @@ sub modifyIostat {
 			if (/Time:/) {
 				&use24HourFormat();
 				chomp();
-				@temp = split(/\s+/, $_);
-				$time = $temp[1];
+				if (/(\d\d:\d\d:\d\d)/) {$time = $1}
 				print MODIFIED "\n";
 			}
 			else {
@@ -47,8 +46,7 @@ sub modifyIostat {
 			if (/\d\d:\d\d:\d\d/) {
 				&use24HourFormat();
 				chomp();
-				@temp = split(/\s+/, $_);
-				$time = $temp[3];
+				if (/(\d\d:\d\d:\d\d)/) {$time = $1}
 				print MODIFIED "\n";
 			}
 			elsif (/tty\s+cpu/ || /extended\s+device\s+statistics/) {}
@@ -90,7 +88,7 @@ sub modifyNetstat {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifySlabinfo {
-	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -100,8 +98,7 @@ sub modifySlabinfo {
 			&use24HourFormat();
 			s#-#\t#g;
 			chomp();
-			@temp = split(/\s+/, $_);
-			$time = $temp[1];
+			if (/(\d\d:\d\d:\d\d)/) {$time = $1}
 			print MODIFIED "\n";
 		}
 		else {
@@ -122,17 +119,16 @@ sub modifySlabinfo {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifySolstat {
-	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
 	print MODIFIED "\n";
 	while (<LOG>) {
-		if (/Sun |Mon |Tue |Wed |Thu |Fri |Sat /) {
+		if (/\d\d:\d\d:\d\d/) {
 			&use24HourFormat();
 			chomp();
-			@temp = split(/\s+/, $_);
-			$time = $temp[3];
+			if (/(\d\d:\d\d:\d\d)/) {$time = $1}
 			print MODIFIED "\n";
 		}
 		else {
@@ -150,7 +146,7 @@ sub modifySolstat {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifySysstat {
-	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -169,7 +165,7 @@ sub modifySysstat {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifyTypeperf {
-	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -368,7 +364,7 @@ sub modifyVxfsstatFile {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifyVxstat {
-	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -376,12 +372,10 @@ sub modifyVxstat {
 	while (<LOG>) {
 		if (/OPERATIONS\s+BLOCKS\s+AVG\s+TIME/ || $_ eq "\n") {}
 		elsif (/TYP\s+NAME\s+READ\s+WRITE\s+READ\s+WRITE\s+READ\s+WRITE/) {print MODIFIED "Time\tType\tName\tOpsRd\tOpsWr\tBlksRd\tBlksWr\tAvgRd\tAvgWr\n"}
-		elsif (/Sun |Mon |Tue |Wed |Thu |Fri |Sat /)  {
+		elsif (/\d\d:\d\d:\d\d/)  {
 			&use24HourFormat();
 			chomp();
-			@temp = split(/\s+/, $_);
-			if ($temp[3] =~ /\d{4}/) {$time = $temp[4]}
-			elsif ($temp[4] =~ /\d{4}/) {$time = $temp[3]}
+			if (/(\d\d:\d\d:\d\d)/) {$time = $1}
 		}
 		else {s#^#$time\t#; print MODIFIED $_}
 	}
