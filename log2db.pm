@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #  Author: Sravan Bhamidipati
-#  Date: 26th July, 2011
+#  Date: 2nd November, 2011
 #  Purpose: Modify logs into text databases that vxperf2 can parse.
 #  DONE: esxtop iostat mpstat netstat pidstat prstat sar slabinfo typeperf vmstat vxfsstatBCache vxfsstatICache vxstat
 #  TODO: sarasc top
@@ -16,7 +16,7 @@ use File::Path;
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifyIostat {
-	my ($logPath, $tablePath, $time, $firstWord, $os) = ($_[0], $_[1], "", 0, "");
+	my ($logPath, $tablePath, $time, $firstWord, $os, @temp) = ($_[0], $_[1], "", 0, "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -31,7 +31,8 @@ sub modifyIostat {
 			if (/Time:/) {
 				&use24HourFormat();
 				chomp();
-				if (/(\d\d:\d\d:\d\d)/) {$time = $1}
+				@temp = split(/\s+/, $_);
+				$time = $temp[1];
 				print MODIFIED "\n";
 			}
 			else {
@@ -46,7 +47,8 @@ sub modifyIostat {
 			if (/\d\d:\d\d:\d\d/) {
 				&use24HourFormat();
 				chomp();
-				if (/(\d\d:\d\d:\d\d)/) {$time = $1}
+				@temp = split(/\s+/, $_);
+				$time = $temp[3];
 				print MODIFIED "\n";
 			}
 			elsif (/tty\s+cpu/ || /extended\s+device\s+statistics/) {}
@@ -88,7 +90,7 @@ sub modifyNetstat {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifySlabinfo {
-	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -98,7 +100,8 @@ sub modifySlabinfo {
 			&use24HourFormat();
 			s#-#\t#g;
 			chomp();
-			if (/(\d\d:\d\d:\d\d)/) {$time = $1}
+			@temp = split(/\s+/, $_);
+			$time = $temp[1];
 			print MODIFIED "\n";
 		}
 		else {
@@ -119,20 +122,27 @@ sub modifySlabinfo {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifySolstat {
-	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
 	print MODIFIED "\n";
 	while (<LOG>) {
-		if (/\d\d:\d\d:\d\d/) {
+		if (/Sun |Mon |Tue |Wed |Thu |Fri |Sat /) {
 			&use24HourFormat();
 			chomp();
-			if (/(\d\d:\d\d:\d\d)/) {$time = $1}
+			@temp = split(/\s+/, $_);
+			$time = $temp[3];
 			print MODIFIED "\n";
 		}
+		elsif (/Total:/) {
+			chomp();
+			@temp = split(/,\s+|\s+/, $_);
+			print MODIFIED "\nprocesses\tlwps\tld1\tld5\tld15\n$temp[1]\t$temp[3]\t$temp[7]\t$temp[8]\t$temp[9]\n\n";
+		}
 		else {
-			s#^(Total:|CPU)#\n$time\t$1# || s#^#$time\t#;
+			s#^(PID|CPU)#\n$1#;
+			# s#^(Total:|CPU)#\n$time\t$1# || s#^#$time\t#;
 			print MODIFIED $_;
 		}
 	}
@@ -146,7 +156,7 @@ sub modifySolstat {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifySysstat {
-	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -165,7 +175,7 @@ sub modifySysstat {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifyTypeperf {
-	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -364,7 +374,7 @@ sub modifyVxfsstatFile {
 # Parameters: Path to log file, path to table file.
 # Returns: -
 sub modifyVxstat {
-	my ($logPath, $tablePath, $time) = ($_[0], $_[1], "");
+	my ($logPath, $tablePath, $time, @temp) = ($_[0], $_[1], "");
 
 	open LOG, $logPath or die "Cannot open $logPath for read: $!\n";
 	open MODIFIED, ">$tablePath" or die "Cannot open $tablePath for write: $!\n";
@@ -372,10 +382,12 @@ sub modifyVxstat {
 	while (<LOG>) {
 		if (/OPERATIONS\s+BLOCKS\s+AVG\s+TIME/ || $_ eq "\n") {}
 		elsif (/TYP\s+NAME\s+READ\s+WRITE\s+READ\s+WRITE\s+READ\s+WRITE/) {print MODIFIED "Time\tType\tName\tOpsRd\tOpsWr\tBlksRd\tBlksWr\tAvgRd\tAvgWr\n"}
-		elsif (/\d\d:\d\d:\d\d/)  {
+		elsif (/Sun |Mon |Tue |Wed |Thu |Fri |Sat /)  {
 			&use24HourFormat();
 			chomp();
-			if (/(\d\d:\d\d:\d\d)/) {$time = $1}
+			@temp = split(/\s+/, $_);
+			if ($temp[3] =~ /\d{4}/) {$time = $temp[4]}
+			elsif ($temp[4] =~ /\d{4}/) {$time = $temp[3]}
 		}
 		else {s#^#$time\t#; print MODIFIED $_}
 	}
@@ -445,6 +457,6 @@ GNU GPL: http://www.gnu.org/copyleft/gpl.html
 
 =head1 LAST UPDATED
 
-1st June, 2011
+2nd November, 2011
 
 =cut

@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 #  Author: Sravan Bhamidipati
-#  Date: 26th July, 2011
+#  Date: 21st October, 2011
 #  Purpose: Perl module with subroutines to parse text databases, summarize and visualize them based on a rules file.
 
 
@@ -152,7 +152,7 @@ sub applyRules {
 					}
 
 					# ADJUST FOR UNITS
-					@$row{$field} =~ s/(%$|k$)// || @$row{$field} =~ s/(.*)m$/$1*1024/e || @$row{$field} =~ s/(.*)g$/$1*1048576/e;
+					@$row{$field} =~ s/(%$|k$)//i || @$row{$field} =~ s/(.*)m$/$1*1024/ei || @$row{$field} =~ s/(.*)g$/$1*1048576/ei;
 
 					# EVALUATE FUNCTIONS
 					push @{$ydata{$field}}, @$row{$field};
@@ -437,6 +437,6 @@ GNU GPL: http://www.gnu.org/copyleft/gpl.html
 
 =head1 LAST UPDATED
 
-1st June, 2011
+21st October, 2011
 
 =cut
