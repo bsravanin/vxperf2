@@ -1,6 +1,9 @@
 #! /usr/bin/perl -w
-#  Author: Sravan Bhamidipati
-#  Date: 21st October, 2011
+#
+#  Author: Sravan Bhamidipati @bsravanin
+#  License: MIT License http://www.opensource.org/licenses/mit-license.php
+#  Courtesy: Symantec Corporation http://www.symantec.com
+#  Date: 4th January, 2012
 #  Purpose: Perl module with subroutines to parse text databases, summarize and visualize them based on a rules file.
 
 
@@ -96,30 +99,30 @@ sub applyRules {
 	while (<RULES>) {
 		chomp();
 		s#^\s+##;
-		if (/^\s*y-axis/i) {
+		if (/^y-axis/i) {
 			($temp, @line) = split(/\s+/, $_);
-			foreach $field (@line) {push @yaxes, $field}
+			push @yaxes, @line;
 		}
-		elsif (/^\s*z-axis/i) {
+		elsif (/^z-axis/i) {
 			@line = split(/\s+/, $_);
 			$zaxis = $line[1];
 		}
-		elsif (/^\s*plot/i) {
+		elsif (/^plot/i) {
 			s#/#!#g;	# FOR FIELDS CONTAINING '/' IN THEM.
 			($temp, @line) = split(/\s+/, $_);
 			foreach $field (@line) {$plot = ($plot eq "") ? $field : $plot . "-" . $field}
 			push @plots, $plot;
 			$plot = "";
 		}
-		elsif (/^\s*only/i) {
+		elsif (/^only/i) {
 			($temp, @line) = split(/\s+/, $_);
-			foreach $field (@line) {push @only, $field}
+			push @only, @line;
 		}
-		elsif (/^\s*offset/i) {
+		elsif (/^offset/i) {
 			@line = split(/\s+/, $_);
 			$offset = $line[1];
 		}
-		elsif (/^\s*points/i) {
+		elsif (/^points/i) {
 			@line = split(/\s+/, $_);
 			$dataPoints = $line[1];
 		}
@@ -399,6 +402,22 @@ Plotting is made assuming uniform intervals between any two rows of a certain fi
 
 =item *
 
+HTML or some other ouptput type instead of a directory of files.
+
+=item *
+
+Single step, combining log2db and vxperf2, for a set of specific logs, using the logtype as input.
+
+=item *
+
+Better filenames and identifiers/labels in summary and plots.
+
+=item *
+
+Option to identify all tables and their fields in logs, and possible summarizing all of them.
+
+=item *
+
 Multiple rules with the keyword B<only>.
 
 =item *
@@ -419,7 +438,11 @@ Detect correlation patterns between fields (y-axes).
 
 =item *
 
-Plotting against custom x-axes.
+Plotting against custom x-axes, and showing absolute time where possible.
+
+=item *
+
+BUG: Keyword B<offset> doesn't consider rules defined with keyword B<only>.
 
 =back
 
@@ -433,10 +456,11 @@ Dhrubojyoti Biswas contributed to the design discussions. Shrinivas Chandukar co
 
 =head1 LICENSE AND COPYRIGHT
 
-GNU GPL: http://www.gnu.org/copyleft/gpl.html
+MIT License: http://www.opensource.org/licenses/mit-license.php
+Symantec Corporation: http://www.symantec.com
 
 =head1 LAST UPDATED
 
-21st October, 2011
+4th January, 2012
 
 =cut
