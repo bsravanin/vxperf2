@@ -1,9 +1,12 @@
 #! /usr/bin/perl -w
-#  Author: Sravan Bhamidipati
-#  Date: 26th July, 2011
+#
+#  Author: Sravan Bhamidipati @bsravanin
+#  License: MIT License http://www.opensource.org/licenses/mit-license.php
+#  Courtesy: Symantec Corporation http://www.symantec.com
+#  Date: 29th November, 2011
 #  Purpose: Modify a known log type into a text database.
-#  DONE: esxtop iostat mpstat netstat pidstat prstat sar slabinfo typeperf vmstat vxfsstatBCache vxfsstatICache vxfsstatFile vxstat
-#  TODO: sarasc top
+#  DONE: esxtop iostat mpstat netstat pidstat prstat sar slabinfo top typeperf vmstat vrstat vxfsstatBCache vxfsstatICache vxfsstatFile vxmemstat vxrlink vxrlinkE vxrlinkStatus vxrvg vxstat
+#  TODO: sarasc
 
 
 use strict;
@@ -11,7 +14,7 @@ use log2db;
 use File::Basename;
 use Switch;
 
-if (scalar(@ARGV) != 3) {die "Usage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|typeperf|vmstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxstat> <logPath> <dbPath>\n"}
+if (scalar(@ARGV) != 3) {die "Usage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|top|typeperf|vmstat|vrstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxmemstat|vxrlink|vxrlinkE|vxrlinkStatus|vxrvg|vxstat> <logPath> <dbPath>\n"}
 
 my ($logType, $logPath, $tablePath) = ($ARGV[0], $ARGV[1], $ARGV[2]);
 my $saveDir = dirname($tablePath);
@@ -57,6 +60,11 @@ switch ($logType) {
 		&modifySlabinfo($logPath, $tablePath);
 	}
 
+	case 'top' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyTop($logPath, $tablePath);
+	}
+
 	case 'typeperf' {
 		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
 		&modifyTypeperf($logPath, $tablePath);
@@ -65,6 +73,11 @@ switch ($logType) {
 	case 'vmstat' {
 		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
 		&modifyVmstat($logPath, $tablePath);
+	}
+
+	case 'vrstat' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyVrstat($logPath, $tablePath);
 	}
 
 	case 'vxfsstatBCache' {
@@ -82,10 +95,35 @@ switch ($logType) {
 		&modifyVxfsstatICache($logPath, $tablePath);
 	}
 
+	case 'vxmemstat' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyVvrstat($logPath, $tablePath);
+	}
+
+	case 'vxrlink' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyVvrstat($logPath, $tablePath);
+	}
+
+	case 'vxrlinkE' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyVxrlinkE($logPath, $tablePath);
+	}
+
+	case 'vxrlinkStatus' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyVxrlinkStatus($logPath, $tablePath);
+	}
+
+	case 'vxrvg' {
+		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
+		&modifyVvrstat($logPath, $tablePath);
+	}
+
 	case 'vxstat' {
 		if (! -d $saveDir) {mkpath ($saveDir) || warn "Directory $saveDir already exists or can't be created: $!\n"}
 		&modifyVxstat($logPath, $tablePath);
 	}
 
-	else {die "Please verify the spelling of $logType.\nUsage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|typeperf|vmstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxstat> <logPath> <dbPath>\n"}
+	else {die "Please verify the spelling of $logType.\nUsage: $0 <esxtop|iostat|mpstat|netstat|pidstat|prstat|sar|slabinfo|top|typeperf|vmstat|vrstat|vxfsstatBCache|vxfsstatFile|vxfsstatICache|vxmemstat|vxrlink|vxrlinkE|vxrlinkStatus|vxrvg|vxstat> <logPath> <dbPath>\n"}
 }

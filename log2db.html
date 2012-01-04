@@ -46,11 +46,16 @@
   &amp;modifySlabinfo($logPath, $tablePath);        # slabinfo
   &amp;modifySolstat($logPath, $tablePath);         # mpstat, prstat
   &amp;modifySysstat($logPath, $tablePath);         # pidstat, sar
+  &amp;modifyTop($logPath, $tablePath);                     # top
   &amp;modifyTypeperf($logPath, $tablePath);        # esxtop, typeperf
   &amp;modifyVmstat($logPath, $tablePath);          # vmstat
+  &amp;modifyVrstat($logPath, $tablePath);          # vrstat
+  &amp;modifyVvrstat($logPath, $tablePath);         # vxmemstat, vxrlink, vxrvg
   &amp;modifyVxfsstatBCache($logPath, $tablePath);  # vxfsstat_bcache
   &amp;modifyVxfsstatICache($logPath, $tablePath);  # vxfsstat_icache
   &amp;modifyVxfsstatFile($logPath, $tablePath);    # vxfsstat_file
+  &amp;modifyVxrlinkE($logPath, $tablePath);        # vxrlink_e
+  &amp;modifyVxrlinkStatus($logPath, $tablePath);   # vxrlink_status
   &amp;modifyVxstat($logPath, $tablePath);          # vxstat</pre>
 <p>
 </p>
@@ -61,7 +66,7 @@
 </p>
 <hr />
 <h1><a name="subroutines">SUBROUTINES</a></h1>
-<p>The <strong>log2db</strong> module contains eleven subroutines: <strong>modifyIostat</strong>, <strong>modifyNetstat</strong>, <strong>modifySlabinfo</strong>, <strong>modifySolstat</strong>, <strong>modifySysstat</strong>, <strong>modifyTypeperf</strong>, <strong>modifyVmstat</strong>, <strong>modifyVxfsstatBCache</strong>, <strong>modifyVxfsstatICache</strong>, <strong>modifyVxfsstatFile</strong> and <strong>modifyVxstat</strong>.</p>
+<p>The <strong>log2db</strong> module contains sixteen subroutines: <strong>modifyIostat</strong>, <strong>modifyNetstat</strong>, <strong>modifySlabinfo</strong>, <strong>modifySolstat</strong>, <strong>modifySysstat</strong>, <strong>modifyTop</strong>, <strong>modifyTypeperf</strong>, <strong>modifyVmstat</strong>, <strong>modifyVrstat</strong>, <strong>modifyVvrstat</strong>, <strong>modifyVxfsstatBCache</strong>, <strong>modifyVxfsstatICache</strong>, <strong>modifyVxfsstatFile</strong>, <strong>modifyVxrlinkE</strong>, <strong>modifyVxrlinkStatus</strong> and <strong>modifyVxstat</strong>.</p>
 <p>All of them take two parameters -- path to the log file to be modified and path to the table file to be saved as. They're all very trivial, basic, and &quot;hardcoded&quot;. One golden rule for creating subroutines is that <strong>the table file should always start with a newline</strong>.</p>
 <p>
 </p>
@@ -77,12 +82,13 @@
 </p>
 <hr />
 <h1><a name="license_and_copyright">LICENSE AND COPYRIGHT</a></h1>
-<p>GNU GPL: <a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a></p>
+<p>MIT License: <a href="http://www.opensource.org/licenses/mit-license.php">http://www.opensource.org/licenses/mit-license.php</a>
+Symantec Corporation: <a href="http://www.symantec.com">http://www.symantec.com</a></p>
 <p>
 </p>
 <hr />
 <h1><a name="last_updated">LAST UPDATED</a></h1>
-<p>2nd November, 2011</p>
+<p>29th November, 2011</p>
 
 </body>
 
