@@ -1,6 +1,9 @@
 #! /usr/bin/perl -w
-#  Author: Sravan Bhamidipati
-#  Date: 18th October, 2011
+#
+#  Author: Sravan Bhamidipati @bsravanin
+#  License: MIT License http://www.opensource.org/licenses/mit-license.php
+#  Courtesy: Symantec Corporation http://www.symantec.com
+#  Date: 16th November, 2011
 #  Purpose: Build vxperf2 tarball.
 
 use strict;
@@ -17,7 +20,7 @@ my $vxperf2 = "vxperf2-$year-$month-$date";
 mkdir $vxperf2;
 
 use File::Copy::Recursive "rcopy";
-foreach my $dir ("build.pl", "examples", "Graphics", "install.pl", "log2db.html", "log2db.pl", "log2db.pm", "README", "vxperf2.html", "vxperf2.pl", "vxperf2.pm") {rcopy ($dir, "$vxperf2/$dir")}
+foreach ("build.pl", "examples", "Graphics", "install.pl", "log2db.html", "log2db.pl", "log2db.pm", "README", "vxperf2.html", "vxperf2.pl", "vxperf2.pm") {rcopy ($_, "$vxperf2/$_")}
 
 `tar -czf $vxperf2.tar.gz $vxperf2`;
 unlink "pod2htmi.tmp", "pod2htmd.tmp";

@@ -1,6 +1,9 @@
 #! /usr/bin/perl -w
-#  Author: Sravan Bhamidipati
-#  Date: 1st June, 2011
+#
+#  Author: Sravan Bhamidipati @bsravanin
+#  License: MIT License http://www.opensource.org/licenses/mit-license.php
+#  Courtesy: Symantec Corporation http://www.symantec.com
+#  Date: 16th November, 2011
 #  Purpose: Copy modules related to vxperf2 into @INC, and respective wrappers into BIN.
 
 use strict;
